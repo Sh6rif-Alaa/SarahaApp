@@ -43,20 +43,23 @@ export const signIn = async (req, res, next) => {
 
 export const getProfile = async (req, res, next) => {
     // one query with aggregate.facet to get followers & following counts
-    const counts = await followerModel.aggregate([
-        {
-            $facet: {
-                followers: [
-                    { $match: { following_id: req.user._id } },
-                    { $count: "count" }
-                ],
-                following: [
-                    { $match: { follower_id: req.user._id } },
-                    { $count: "count" }
-                ]
+    const counts = await db_services.aggregate({
+        model: followerModel,
+        pipeline: [
+            {
+                $facet: {
+                    followers: [
+                        { $match: { following_id: req.user._id } },
+                        { $count: "count" }
+                    ],
+                    following: [
+                        { $match: { follower_id: req.user._id } },
+                        { $count: "count" }
+                    ]
+                }
             }
-        }
-    ])
+        ]
+    })
 
     successResponse({
         res, data: {
