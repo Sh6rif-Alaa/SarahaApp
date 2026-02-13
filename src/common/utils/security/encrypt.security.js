@@ -1,11 +1,9 @@
 import crypto from 'node:crypto';
 
-const key = "qwghjyumi12638ikhb7'yr@%^5yhi&@r";
-
 export function encrypt({ text } = {}) {
     const iv = crypto.randomBytes(16)
 
-    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv)
+    const cipher = crypto.createCipheriv(process.env.ENCRYPT_ALGORITHM, Buffer.from(process.env.ENCRYPT_KEY), iv)
 
     let encrypted = cipher.update(text, 'utf8', 'hex')
 
@@ -17,7 +15,7 @@ export function encrypt({ text } = {}) {
 export function decrypt({ cipherText } = {}) {
     const ivBuffer = Buffer.from(cipherText.split(':')[0], 'hex')
 
-    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), ivBuffer)
+    const decipher = crypto.createDecipheriv(process.env.ENCRYPT_ALGORITHM, Buffer.from(process.env.ENCRYPT_KEY), ivBuffer)
 
     let decrypted = decipher.update(cipherText.split(':')[1], 'hex', 'utf8')
 
