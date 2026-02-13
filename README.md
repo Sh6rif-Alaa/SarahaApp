@@ -216,7 +216,7 @@ This project is licensed under the ISC License.
 
 ## 👨‍💻 Author
 
-Your Name - [@Sh6rif-Alaa](https://github.com/Sh6rif-Alaa)
+[@Sh6rif-Alaa](https://github.com/Sh6rif-Alaa)
 
 ## 🙏 Acknowledgments
 
