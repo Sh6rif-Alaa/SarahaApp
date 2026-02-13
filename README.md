@@ -58,6 +58,7 @@ saraha-app/
 │   └── index.js                   # Application entry point
 ├── .env.example                   # Environment variables template
 ├── .gitignore
+├── postman_collection.json #import it on postman for apis
 ├── package.json
 └── README.md
 ```
