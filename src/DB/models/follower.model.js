@@ -24,8 +24,8 @@ followerSchema.index(
     { unique: true }
 )
 
-followerSchema.index({ follower_id: 1 })
-followerSchema.index({ following_id: 1 })
+// followerSchema.index({ follower_id: 1 })
+// followerSchema.index({ following_id: 1 })
 
 const followerModel = mongoose.models.follower || mongoose.model('follower', followerSchema)
 followerModel.syncIndexes()

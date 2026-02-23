@@ -1,15 +1,16 @@
+import cors from 'cors'
 import checkConnection from './DB/connection.js'
 import express from 'express'
 import userRouter from './modules/users/user.controller.js'
 import messageRouter from './modules/messages/message.service.js'
 import successResponse from './common/utils/response.success.js'
 import followerRouter from './modules/followers/follower.controller.js'
-import 'dotenv/config'
+import { env } from '../config/config.service.js'
 
 const app = express()
 
 const bootstrap = () => {
-    app.use(express.json())
+    app.use(cors(), express.json())
     checkConnection()
 
     app.get('/', (req, res) => successResponse({ res, message: 'Welcome on Saraha App' }))
@@ -27,7 +28,7 @@ const bootstrap = () => {
         res.status(err.cause || 500).json({ message: err.message, stack: err.stack })
     })
 
-    app.listen(process.env.PORT || 3000, () => console.log(`app running on port ${process.env.PORT || 3000}!`))
+    app.listen(env.PORT, () => console.log(`app running on port ${env.PORT}!`))
 }
 
 export default bootstrap

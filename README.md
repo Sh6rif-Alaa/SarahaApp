@@ -4,64 +4,27 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 
 ## 📋 Features
 
-- **User Authentication** - Secure signup and signin with JWT tokens
+- **User Authentication** - Secure signup and signin with JWT tokens and Gmail authentication
 - **User Profiles** - Create and manage user profiles with detailed information
-- **Anonymous Messaging** - Send and receive anonymous messages
 - **Follow System** - Follow and unfollow other users
 - **Secure Password Storage** - Bcrypt encryption for password security
 - **Data Encryption** - Additional security layer for sensitive data
+- **Anonymous Messaging** - *(Coming Soon)* Send and receive anonymous messages
 
 ## 🛠️ Technologies
 
 - **Node.js** - Runtime environment
-- **Express.js v5** - Web framework with enhanced error handling
+- **Express.js v5.2.1** - Web framework with enhanced error handling and native error middleware support
 - **MongoDB** - NoSQL database
-- **Mongoose** - MongoDB object modeling
-- **JWT** - JSON Web Tokens for authentication
-- **Bcrypt** - Password hashing
-- **UUID** - Unique identifier generation
-- **dotenv** - Environment variable management
-
-## 📁 Project Structure
-
-```
-saraha-app/
-├── src/
-│   ├── DB/
-│   │   ├── connection.js          # Database connection setup
-│   │   ├── db.service.js          # Database services
-│   │   └── models/                # Mongoose models
-│   │       ├── user.model.js      # User schema
-│   │       ├── message.model.js   # Message schema
-│   │       └── follower.model.js  # Follower relationship schema
-│   ├── common/
-│   │   ├── enum/                  # Enums for type safety
-|   |   |   └── user.enum.js
-│   │   ├── middleware/
-│   │   │   └── auth.js            # Authentication middleware
-│   │   └── utils/
-│   │       ├── response.success.js # Success response handler
-│   │       └── security/          # Security utilities
-│   │           ├── encrypt.security.js
-│   │           └── hash.security.js
-│   ├── modules/
-│   │   ├── users/                 # User module
-│   │   │   ├── user.controller.js
-│   │   │   └── user.service.js
-│   │   ├── messages/              # Message module
-│   │   │   ├── message.controller.js
-│   │   │   └── message.service.js
-│   │   └── followers/             # Follower module
-│   │       ├── follower.controller.js
-│   │       └── follower.service.js
-│   ├── app.controller.js          # Main application controller
-│   └── index.js                   # Application entry point
-├── .env.example                   # Environment variables template
-├── .gitignore
-├── postman_collection.json #import it on postman for apis
-├── package.json
-└── README.md
-```
+- **Mongoose v9.1.6** - MongoDB object modeling and schema validation
+- **JWT (jsonwebtoken v9.0.3)** - JSON Web Tokens for authentication
+- **Bcrypt v6.0.0** - Secure password hashing and verification
+- **Google Auth Library v10.5.0** - OAuth 2.0 authentication with Gmail
+- **UUID v13.0.0** - Unique identifier generation
+- **CORS v2.8.6** - Cross-Origin Resource Sharing middleware
+- **dotenv v17.3.1** - Environment variable management
+- **cross-env v10.1.0** - Cross-platform environment variable setting
+- **Node.js Crypto** - Built-in encryption for sensitive data
 
 ## 🚀 Getting Started
 
@@ -86,16 +49,19 @@ npm install
 
 3. **Set up environment variables**
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
-Edit `.env` with your configuration:
+Edit `.env.local` with your configuration:
 ```env
 PORT=your_port
-DATABASE_URL=your_database_url
-TOKEN_KEY=your_jwt_secret_key
-ENCRYPT_KEY=your_encryption_key
-ENCRYPT_ALGORITHM=aes-256-cbc
+DATABASE_URL=your_mongodb
+TOKEN_KEY=your_jwt_key
+ENCRYPT_KEY==your_encrypt_key
+ENCRYPT_ALGORITHM=your_algorithm like (aes-256-cbc)
+PREFIX=your_prefix
+SALT_ROUNDS=your_salt
+CLIENT_ID=your_client_id
 ```
 
 4. **Run the application**
@@ -119,6 +85,7 @@ The server will start on `http://localhost:3000` (or your specified PORT)
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
 | POST | `/users/signup` | Register new user | No |
+| POST | `/users/signup/gmail` | Register new user with Gmail | No |
 | POST | `/users/signin` | Login user | No |
 | GET | `/users/profile` | Get user profile | Yes |
 
@@ -129,18 +96,16 @@ The server will start on `http://localhost:3000` (or your specified PORT)
 | POST | `/followers` | Follow a user | Yes |
 | DELETE | `/followers` | Unfollow a user | Yes |
 
-### Messages
+### Messages *(Coming Soon)*
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| Coming soon | `/messages` | Message endpoints | Yes |
+The messages module is under development. Endpoints for sending and receiving anonymous messages will be available soon.
 
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication. After successful login, you'll receive a token that should be included in the Authorization header:
 
 ```
-Authorization: Bearer <your_token_here>
+Authorization: your_prefix <your_token_here>
 ```
 
 ## 📊 Data Models
