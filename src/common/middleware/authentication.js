@@ -11,7 +11,7 @@ const authentication = async (req, res, next) => {
 
     const [prefix, token] = authorization.split(' ')
 
-    if (prefix !== env.PREFIX) throw new Error('invalid Bearer', { cause: 404 })
+    if (prefix !== env.PREFIX) throw new Error('invalid prefix', { cause: 404 })
 
     const decode = verifyToken({ token, secret_key: env.TOKEN_KEY })
 

@@ -9,6 +9,7 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 - **Follow System** - Follow and unfollow other users
 - **Secure Password Storage** - Bcrypt encryption for password security
 - **Data Encryption** - Additional security layer for sensitive data
+- **Input Validation** - Comprehensive Joi-based validation for all API requests
 - **Anonymous Messaging** - *(Coming Soon)* Send and receive anonymous messages
 
 ## 🛠️ Technologies
@@ -163,6 +164,51 @@ The application uses Express v5's native error handling capabilities. All errors
 {
   "message": "Error message",
   "stack": "Error stack trace (in development)"
+}
+```
+
+## ✅ Validation
+
+The API uses **Joi** for comprehensive input validation on all endpoints. Validation schemas are defined per module:
+
+### User Validation Schemas
+
+- **signUpSchema** - Validates user registration with:
+  - `userName`: 5-40 characters (required)
+  - `email`: Valid email format (required)
+  - `password`: 6-30 characters with alphanumeric and special characters (required)
+  - `cPassword`: Must match password (required)
+  - `phone`: Egyptian phone format (required)
+  - `gender`: male/female enum (default: male)
+  - `age`: 16-60 years old (required)
+
+- **signUpGmailSchema** - Validates Gmail OAuth signup:
+  - `idToken`: Google ID token (required)
+
+- **signInSchema** - Validates user login:
+  - `email`: Valid email format (required)
+  - `password`: Valid password format (required)
+
+### Follower Validation Schemas
+
+- **followSchema** - Validates follow/unfollow action:
+  - `following_id`: User ID to follow (required)
+
+### Custom Validation Response
+
+When validation fails, the API returns a 400 status with detailed error information:
+
+```json
+{
+  "message": "validation error",
+  "error": [
+    {
+      "key": "body",
+      "message": "email must be a valid email",
+      "path": "email",
+      "type": "string.email"
+    }
+  ]
 }
 ```
 

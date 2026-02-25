@@ -13,9 +13,6 @@ import { env } from "../../../config/config.service.js"
 export const signUp = async (req, res, next) => {
     const { userName, email, phone, age, gender, password, cPassword } = req.body
 
-    if (password !== cPassword)
-        throw new Error('password not match confirm password', { cause: 400 })
-
     if (await db_services.findOne({ filter: { email }, model: userModel }))
         throw new Error('email already exist', { cause: 404 })
 
