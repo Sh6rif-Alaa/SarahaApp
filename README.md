@@ -52,10 +52,10 @@ npm install
 
 3. **Set up environment variables**
 ```bash
-cp .env.example .env.local
+cp .env.example .env.development
 ```
 
-Edit `.env.local` with your configuration:
+Edit `.env.development` with your configuration:
 ```env
 PORT=your_port
 DATABASE_URL=your_mongodb
