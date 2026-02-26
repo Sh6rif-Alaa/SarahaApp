@@ -25,6 +25,8 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 - **CORS v2.8.6** - Cross-Origin Resource Sharing middleware
 - **dotenv v17.3.1** - Environment variable management
 - **cross-env v10.1.0** - Cross-platform environment variable setting
+- **Multer v2.0.2** - Middleware for handling file uploads (images, documents, etc.)
+- **Joi v18.0.2** - Data validation and schema description language
 - **Node.js Crypto** - Built-in encryption for sensitive data
 
 ## 🚀 Getting Started
@@ -153,8 +155,8 @@ Authorization: your_prefix <your_token_here>
 
 ### Scripts
 
-- `npm start` - Start the production server
-- `npm run dev` - Start the development server with nodemon
+- `npm start` - Start the production server (`NODE_ENV=production`)
+- `npm run dev` - Start the development server with nodemon (`NODE_ENV=development`)
 
 ### Error Handling
 
@@ -211,6 +213,58 @@ When validation fails, the API returns a 400 status with detailed error informat
   ]
 }
 ```
+
+## 📁 File Upload (Multer)
+
+The API supports file uploads with **Multer v2.0.2**. File upload functionality is configured with:
+
+- **Storage**: Local disk storage with automatic directory creation
+- **Naming**: UUID-based filenames to ensure uniqueness
+- **File Type Filtering**: MIME type validation (images: `image/png`, `image/jpeg`)
+- **Upload Paths**: Files are organized by category (e.g., `uploads/users/`)
+
+### Upload Configuration
+
+```javascript
+multer_local({ 
+  custom_path: 'users',        // Directory path
+  custom_type: ['image/png', 'image/jpeg']  // Allowed MIME types
+})
+```
+
+### Supported File Types
+
+- **Images**: `image/png`, `image/jpeg`
+
+### Safe File Handling
+
+- Filenames are generated with UUIDs to prevent naming conflicts
+- Directories are created automatically if they don't exist
+- Invalid file types are rejected with a 400 error
+
+## 🌍 Environment Variables
+
+The application supports multiple environments:
+
+### Development Environment
+```bash
+npm run dev
+# NODE_ENV=development
+# Auto-reload with nodemon
+```
+
+### Production Environment
+```bash
+npm start
+# NODE_ENV=production
+# Optimized for production deployment
+```
+
+### Environment Files
+- `.env.development` - Development-specific variables
+- `.env.production` - Production-specific variables
+
+All environment files are listed in `.gitignore` for security.
 
 ## 🤝 Contributing
 

@@ -16,10 +16,62 @@
             "method": "POST",
             "header": [],
             "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"userName\": \"Omar Ali\",\r\n  \"phone\": \"01232945168\",\r\n  \"gender\": \"male\",\r\n  \"age\": 26,\r\n  \"email\": \"omar@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"cPassword\": \"123456\"\r\n}",
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userName",
+                  "value": "Sherif Alaa",
+                  "type": "text",
+                  "id": 0
+                },
+                {
+                  "key": "email",
+                  "value": "sherefalex34@gmail.com",
+                  "type": "text",
+                  "id": 1
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "id": 2,
+                  "fileUploadError": "",
+                  "src": [
+                    "c:\\Users\\Shifo\\Downloads\\landing2.jpg"
+                  ]
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text",
+                  "id": 3
+                },
+                {
+                  "key": "cPassword",
+                  "value": "123456",
+                  "type": "text",
+                  "id": 4
+                },
+                {
+                  "key": "phone",
+                  "value": "01012983148",
+                  "type": "text",
+                  "id": 5
+                },
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "type": "text",
+                  "id": 6
+                },
+                {
+                  "key": "age",
+                  "value": "24",
+                  "type": "text",
+                  "id": 7
+                }
+              ],
               "options": {
-                "raw": {
+                "formdata": {
                   "language": "json"
                 }
               }
@@ -46,7 +98,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"mariam.adel@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "raw": "{\r\n  \"email\": \"sherefalex34@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -160,8 +212,8 @@
                 "type": "text"
               },
               {
-                "key": "authentication",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGYxN2I5ZjE5ZTlhNmE0ODA2N2JhYyIsImlhdCI6MTc3MDk5MjI5MCwiZXhwIjoxNzcwOTk1ODkwLCJqdGkiOiJjOGY1MzViZi00Zjg5LTRjYjMtOTczZS0zM2ZjY2NjNDUwZmIifQ.6z9uYt7atV9DZCurZxDdmprumJRvE85pnx3PzUmB2mA",
+                "key": "authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY2ZjVkZTM0ZTA4ZGYwOTliYTJmZiIsImlhdCI6MTc3MjA2MjI3MiwiZXhwIjoxNzcyMDY1ODcyLCJqdGkiOiJhZGNhMTI1MC00MzhiLTRkODktODE0NS1lMmI2MmUyNzA5YjQifQ.di3JetWo6zUzEKVgPR0Yhh-oK6q0IhqUsuP1H3G7Xd4",
                 "type": "text",
                 "id": 0
               }
@@ -304,15 +356,15 @@
                 "type": "text"
               },
               {
-                "key": "authentication",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGYxN2I5ZjE5ZTlhNmE0ODA2N2JhYyIsImlhdCI6MTc3MDk4NTYyNiwiZXhwIjoxNzcwOTg5MjI2LCJqdGkiOiI1OGFiNjQzYS00MmY1LTQ2MjctYjEyMS1lZDVhZTQ2OWJjZTYifQ.6iD7AnmH8k0uwUyi8LSQw4ROElFer_Fe38C8BoBJ8RM",
+                "key": "authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY2ZjVkZTM0ZTA4ZGYwOTliYTJmZiIsImlhdCI6MTc3MjA2MjI3MiwiZXhwIjoxNzcyMDY1ODcyLCJqdGkiOiJhZGNhMTI1MC00MzhiLTRkODktODE0NS1lMmI2MmUyNzA5YjQifQ.di3JetWo6zUzEKVgPR0Yhh-oK6q0IhqUsuP1H3G7Xd4",
                 "type": "text",
                 "id": 0
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"following_id\":\"698f17b9f19e9a6a48067bac\"\r\n}",
+              "raw": "{\r\n    \"following_id\":\"699f86081c050def1ba55242\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

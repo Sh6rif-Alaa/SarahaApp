@@ -11,12 +11,20 @@ import { OAuth2Client } from 'google-auth-library'
 import { env } from "../../../config/config.service.js"
 
 export const signUp = async (req, res, next) => {
-    const { userName, email, phone, age, gender, password, cPassword } = req.body
+    const { userName, email, phone, age, gender, password } = req.body
 
     if (await db_services.findOne({ filter: { email }, model: userModel }))
         throw new Error('email already exist', { cause: 404 })
 
-    const user = await db_services.create({ model: userModel, data: { userName, email, phone: encrypt({ text: phone }), age, gender, password: Hash({ plainText: password, salt: env.SALT_ROUNDS }) } })
+    const user = await db_services.create({
+        model: userModel,
+        data: {
+            userName, email, age, gender,
+            phone: encrypt({ text: phone }),
+            password: Hash({ plainText: password, salt: env.SALT_ROUNDS }),
+            profilePicture: req.file?.path
+        }
+    })
 
     successResponse({ res, status: 201, message: "created", data: user })
 }
