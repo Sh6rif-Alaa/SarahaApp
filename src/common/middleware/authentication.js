@@ -4,26 +4,28 @@ import userModel from "../../DB/models/user.model.js"
 import { decrypt } from "../utils/security/encrypt.security.js"
 import { verifyToken } from "../utils/token.service.js"
 
-const authentication = async (req, res, next) => {
-    const { authorization } = req.headers
+const authentication = (secret_key) => {
+    return async (req, res, next) => {
+        const { authorization } = req.headers
 
-    if (!authorization) throw new Error('no authentication (token)', { cause: 404 })
+        if (!authorization) throw new Error('no authentication (token)', { cause: 404 })
 
-    const [prefix, token] = authorization.split(' ')
+        const [prefix, token] = authorization.split(' ')
 
-    if (prefix !== env.PREFIX) throw new Error('invalid prefix', { cause: 404 })
+        if (prefix !== env.PREFIX) throw new Error('invalid prefix', { cause: 404 })
 
-    const decode = verifyToken({ token, secret_key: env.TOKEN_KEY })
+        const decode = verifyToken({ token, secret_key })
 
-    if (!decode || !decode?.id) throw new Error('invalid token', { cause: 400 })
+        if (!decode || !decode?.id) throw new Error('invalid token', { cause: 400 })
 
-    const user = await findById({ model: userModel, id: decode.id, select: "-password" })
+        const user = await findById({ model: userModel, id: decode.id })
 
-    if (!user) throw new Error('user not exist', { cause: 404 })
+        if (!user) throw new Error('user not exist', { cause: 404 })
 
-    req.user = { ...user._doc, phone: user.phone && decrypt({ cipherText: user.phone }), userName: user.userName }
+        req.user = user
 
-    next()
+        next()
+    }
 }
 
 

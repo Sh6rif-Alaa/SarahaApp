@@ -64,7 +64,22 @@ const userSchema = new mongoose.Schema(
             required: true,
             default: roleEnum.user
         },
-        profilePicture: String,
+        profilePicture: {
+            secure_url: {
+                type: String,
+                required: true,
+            },
+            public_id: {
+                type: String, required: function () {
+                    return this.provider === providerEnum.google ? false : true
+                },
+            }
+        },
+        profileViews: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
         confirmed: Boolean,
     },
     {

@@ -15,6 +15,7 @@ const bootstrap = () => {
 
     app.get('/', (req, res) => successResponse({ res, message: 'Welcome on Saraha App' }))
 
+    app.use('/uploads', express.static("uploads"))
     app.use('/users', userRouter)
     app.use('/messages', messageRouter)
     app.use('/followers', followerRouter)

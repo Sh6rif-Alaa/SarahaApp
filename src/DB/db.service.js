@@ -18,6 +18,10 @@ export const findById = async ({ model, id, populate = [], select = "" } = {}) =
     return await model.findById(id).populate(populate).select(select)
 }
 
+export const findOneAndUpdate = async ({ model, filter = {}, update, options = {}, select = "" } = {}) => {
+    return await model.findOneAndUpdate(filter, update, options).select(select)
+}
+
 export const deleteOne = async ({ model, filter } = {}) => {
     return await model.deleteOne(filter)
 }

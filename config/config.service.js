@@ -11,4 +11,8 @@ export const env = {
     PREFIX: process.env.PREFIX,
     SALT_ROUNDS: process.env.SALT_ROUNDS,
     CLIENT_ID: process.env.CLIENT_ID,
+    REFRESH_TOKEN_KEY: process.env.REFRESH_TOKEN_KEY,
+    CLOUD_NAME: process.env.CLOUD_NAME,
+    API_KEY: process.env.API_KEY,
+    API_SECRET: process.env.API_SECRET
 }
