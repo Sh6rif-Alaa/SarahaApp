@@ -300,7 +300,7 @@ TOKEN_KEY=your_jwt_access_token_secret
 REFRESH_TOKEN_KEY=your_jwt_refresh_token_secret
 ENCRYPT_KEY=your_encryption_key
 ENCRYPT_ALGORITHM=aes-256-cbc
-PREFIX=Bearer
+PREFIX=your_prefix
 SALT_ROUNDS=your_bcrypt_salt_rounds
 CLIENT_ID=your_google_oauth_client_id
 CLOUD_NAME=your_cloudinary_cloud_name
@@ -316,23 +316,6 @@ The application includes a profile sharing feature that allows users to share th
 - **View Tracking**: Each profile view increments a counter for analytics
 - **Follower Counts**: Public profiles display follower and following statistics
 - **Secure Data**: Sensitive information like passwords remain protected
-
-### Required Environment Variables
-
-```env
-PORT=your_port
-DATABASE_URL=your_mongodb_connection_string
-TOKEN_KEY=your_jwt_access_token_secret
-REFRESH_TOKEN_KEY=your_jwt_refresh_token_secret
-ENCRYPT_KEY=your_encryption_key
-ENCRYPT_ALGORITHM=aes-256-cbc
-PREFIX=Bearer
-SALT_ROUNDS=your_bcrypt_salt_rounds
-CLIENT_ID=your_google_oauth_client_id
-CLOUD_NAME=your_cloudinary_cloud_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
-```
 
 ## 🤝 Contributing
 
