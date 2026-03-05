@@ -22,10 +22,13 @@ export const signUp = async (req, res, next) => {
         resource_type: 'image'
     })
 
+    // to desroty file on global error handling
+    req.file.public_id = public_id
+
     const user = await db_services.create({
         model: userModel,
         data: {
-            userName, email, age, gender,
+            email, age, gender,
             phone: encrypt({ text: phone }),
             password: Hash({ plainText: password, salt: env.SALT_ROUNDS }),
             profilePicture: { secure_url, public_id },

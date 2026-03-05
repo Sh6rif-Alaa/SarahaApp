@@ -5,7 +5,7 @@ import authentication from "../../common/middleware/authentication.js";
 import { roleEnum } from "../../common/enum/user.enum.js";
 import validation from "../../common/middleware/validation.js";
 import { shareProfileSchema, signInSchema, signUpGmailSchema, signUpSchema, updatePasswordSchema, updateProfileSchema } from "./user.validation.js";
-import { multer_host } from "../../common/middleware/multer.js";
+import { multer_host, multer_local } from "../../common/middleware/multer.js";
 import multerEnum from "../../common/enum/multer.enum.js";
 import { env } from "../../../config/config.service.js";
 

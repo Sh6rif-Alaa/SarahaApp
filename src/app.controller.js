@@ -6,6 +6,8 @@ import messageRouter from './modules/messages/message.service.js'
 import successResponse from './common/utils/response.success.js'
 import followerRouter from './modules/followers/follower.controller.js'
 import { env } from '../config/config.service.js'
+import cloudinary from './common/utils/cloudinary.js'
+import fs from "node:fs"
 
 const app = express()
 
@@ -24,8 +26,13 @@ const bootstrap = () => {
 
     // global error handling express v5 support it without making asyncHandler
     // catch throw Error
-    app.use((err, req, res, next) => {
+    app.use(async (err, req, res, next) => {
         console.log(err.stack)
+        // // remove local file if there is any error
+        // if (err && req.file?.path) fs.unlinkSync(req.file.path)
+
+        // remove host file if there is any error
+        if (err && req.file?.public_id) await cloudinary.uploader.destroy(req.file.public_id)
         res.status(err.cause || 500).json({ message: err.message, stack: err.stack })
     })
 
