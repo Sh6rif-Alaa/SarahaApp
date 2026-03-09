@@ -10,6 +10,8 @@ import { generateToken, verifyToken } from "../../common/utils/token.service.js"
 import { OAuth2Client } from 'google-auth-library'
 import { env } from "../../../config/config.service.js"
 import cloudinary from "../../common/utils/cloudinary.js"
+import { randomUUID } from 'node:crypto'
+import revokeTokenModel from "../../DB/models/revokeToken.model.js"
 
 export const signUp = async (req, res, next) => {
     const { userName, email, phone, age, gender, password } = req.body
@@ -64,12 +66,14 @@ export const signUpWithGmail = async (req, res, next) => {
     if (user.provider === providerEnum.system)
         throw new Error('please log in system only', { cause: 400 })
 
+    const uuid = randomUUID()
+
     const accessToken = generateToken({
         payload: { id: user._id },
         secret_key: env.TOKEN_KEY,
         options: {
             expiresIn: "5m",
-            jwtid: uuidv4()
+            jwtid: uuid
         }
     })
 
@@ -78,7 +82,7 @@ export const signUpWithGmail = async (req, res, next) => {
         secret_key: env.REFRESH_TOKEN_KEY,
         options: {
             expiresIn: "1y",
-            jwtid: uuidv4()
+            jwtid: uuid
         }
     })
 
@@ -96,12 +100,14 @@ export const signIn = async (req, res, next) => {
     if (!Compare({ plainText: password, hash: user.password }))
         throw new Error('invalid password', { cause: 400 })
 
+    const uuid = randomUUID()
+
     const accessToken = generateToken({
         payload: { id: user._id },
         secret_key: env.TOKEN_KEY,
         options: {
             expiresIn: "5m",
-            jwtid: uuidv4()
+            jwtid: uuid
         }
     })
 
@@ -110,7 +116,7 @@ export const signIn = async (req, res, next) => {
         secret_key: env.REFRESH_TOKEN_KEY,
         options: {
             expiresIn: "1y",
-            jwtid: uuidv4()
+            jwtid: uuid
         }
     })
 
@@ -123,7 +129,7 @@ export const refreshToken = async (req, res, next) => {
         secret_key: env.TOKEN_KEY,
         options: {
             expiresIn: "5m",
-            jwtid: uuidv4()
+            jwtid: randomUUID()
         }
     })
 
@@ -234,4 +240,29 @@ export const updatePassowrd = async (req, res, next) => {
     successResponse({
         res, data: req.user
     })
+}
+
+export const logout = async (req, res, next) => {
+    const { flag } = req.query
+
+    if (flag === 'all') {
+        req.user.changeCredential = new Date()
+        await req.user.save()
+
+        await db_services.deleteMany({
+            model: revokeTokenModel,
+            filter: { userId: req.user._id },
+        })
+    } else {
+        await db_services.create({
+            model: revokeTokenModel,
+            data: {
+                tokenId: req.decode.jti,
+                userId: req.user._id,
+                expiredAt: new Date(req.decode.exp * 1000),
+            }
+        })
+    }
+
+    successResponse({ res })
 }

@@ -80,6 +80,7 @@ const userSchema = new mongoose.Schema(
             required: true,
             default: 0,
         },
+        changeCredential: Date,
         confirmed: Boolean,
     },
     {

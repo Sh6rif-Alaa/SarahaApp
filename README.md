@@ -7,12 +7,13 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 - **User Authentication** - Secure signup and signin with JWT tokens and Gmail authentication
 - **User Profiles** - Create and manage user profiles with detailed information, profile pictures, and view tracking
 - **Follow System** - Follow and unfollow other users with follower/following counts
+- **Token Management** - JWT access and refresh tokens with logout functionality (single device or all devices)
+- **Token Revocation** - Secure logout with automatic token revocation and TTL cleanup
 - **Secure Password Storage** - Bcrypt encryption for password security
 - **Data Encryption** - Additional security layer for sensitive data like phone numbers
 - **Input Validation** - Comprehensive Joi-based validation for all API requests
 - **File Upload** - Image upload support with Cloudinary integration
 - **Profile Sharing** - Public profile sharing with view count tracking
-- **Token Management** - JWT access and refresh token system
 - **Anonymous Messaging** - *(Coming Soon)* Send and receive anonymous messages
 
 ## 🛠️ Technologies
@@ -85,6 +86,7 @@ The server will start on `http://localhost:3000` (or your specified PORT)
 | POST | `/users/signup/gmail` | Register new user with Gmail OAuth | No |
 | POST | `/users/signin` | Login user | No |
 | POST | `/users/refreshToken` | Refresh access token | Yes |
+| POST | `/users/logout` | Logout user (revoke token or all tokens) | Yes |
 | GET | `/users/profile` | Get authenticated user profile with follower counts | Yes |
 | GET | `/users/shareProfile/:id` | Get public user profile (increments view count) | No |
 | PATCH | `/users/updateProfile` | Update user profile information | Yes |
@@ -114,6 +116,34 @@ Authorization: your_prefix <your_token_here>
 - **Access Token**: Short-lived (5 minutes) for API access
 - **Refresh Token**: Long-lived (1 year) for obtaining new access tokens
 - Use `/users/refreshToken` endpoint to get new access tokens when they expire
+- **Token Revocation**: Supports individual token logout or logout from all devices
+  - Single logout: `POST /users/logout` (revokes current token only)
+  - Logout all devices: `POST /users/logout?flag=all` (invalidates all tokens by updating `changeCredential` timestamp)
+  - Revoked tokens are tracked in the database with automatic TTL cleanup
+
+### Logout Usage
+
+The logout endpoint provides two different logout strategies:
+
+**1. Single Device Logout** (default)
+```bash
+POST /users/logout
+Authorization: your_prefix <your_access_token>
+```
+- Revokes only the current token
+- User can still access with other tokens from different devices
+- Revoked token ID is stored in RevokeToken model with expiration time
+- Tokens are auto-deleted after expiration via MongoDB TTL index
+
+**2. Logout from All Devices**
+```bash
+POST /users/logout?flag=all
+Authorization: your_prefix <your_access_token>
+```
+- Updates user's `changeCredential` timestamp
+- Invalidates ALL tokens issued before this timestamp
+- Removes all revoked token records for the user
+- All previous devices will be logged out
 
 ## 📊 Data Models
 
@@ -134,6 +164,7 @@ Authorization: your_prefix <your_token_here>
     public_id: String (optional for Google users)
   },
   profileViews: Number (default: 0),
+  changeCredential: Date (used to invalidate all tokens when logout from all devices),
   confirmed: Boolean,
   createdAt: Date,
   updatedAt: Date,
@@ -156,6 +187,17 @@ Authorization: your_prefix <your_token_here>
 {
   follower_id: ObjectId (ref: User),
   following_id: ObjectId (ref: User),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### RevokeToken Model
+```javascript
+{
+  tokenId: String (unique identifier for revoked token),
+  userId: ObjectId (ref: User),
+  expiredAt: Date (token expiration time, auto-deleted via TTL index),
   createdAt: Date,
   updatedAt: Date
 }

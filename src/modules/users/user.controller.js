@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProfile, refreshToken, shareProfile, signIn, signUp, signUpWithGmail, updatePassowrd, updateProfile } from './user.service.js';
+import { getProfile, logout, refreshToken, shareProfile, signIn, signUp, signUpWithGmail, updatePassowrd, updateProfile } from './user.service.js';
 import authorization from "../../common/middleware/authorization.js";
 import authentication from "../../common/middleware/authentication.js";
 import { roleEnum } from "../../common/enum/user.enum.js";
@@ -16,6 +16,7 @@ userRouter.post('/signup', multer_host(multerEnum.image).single('image'), valida
 userRouter.post('/signup/gmail', validation(signUpGmailSchema), signUpWithGmail)
 userRouter.post('/signin', validation(signInSchema), signIn)
 userRouter.post('/refreshToken', authentication(env.REFRESH_TOKEN_KEY), authorization([roleEnum.user]), refreshToken)
+userRouter.post('/logout', authentication(env.TOKEN_KEY), logout)
 userRouter.patch('/updateProfile', validation(updateProfileSchema), authentication(env.TOKEN_KEY), authorization([roleEnum.user]), updateProfile)
 userRouter.patch('/updatePassword', validation(updatePasswordSchema), authentication(env.TOKEN_KEY), authorization([roleEnum.user]), updatePassowrd)
 userRouter.get('/profile', authentication(env.TOKEN_KEY), authorization([roleEnum.user]), getProfile)

@@ -1,7 +1,7 @@
 import { env } from "../../../config/config.service.js"
-import { findById } from "../../DB/db.service.js"
+import { findById, findOne } from "../../DB/db.service.js"
+import revokeTokenModel from "../../DB/models/revokeToken.model.js"
 import userModel from "../../DB/models/user.model.js"
-import { decrypt } from "../utils/security/encrypt.security.js"
 import { verifyToken } from "../utils/token.service.js"
 
 const authentication = (secret_key) => {
@@ -22,7 +22,12 @@ const authentication = (secret_key) => {
 
         if (!user) throw new Error('user not exist', { cause: 404 })
 
+        if (user.changeCredential?.getTime() > decode.iat * 1000) throw new Error('invalid all token', { cause: 400 })
+
+        if (await findOne({ model: revokeTokenModel, filter: { tokenId: decode.jti } })) throw new Error('invalid one token', { cause: 400 })
+
         req.user = user
+        req.decode = decode
 
         next()
     }
