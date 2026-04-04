@@ -6,7 +6,7 @@ import { roleEnum } from "../../common/enum/user.enum.js";
 import validation from "../../common/middleware/validation.js";
 import { followSchema } from "./follower.validation.js";
 
-const followerRouter = Router()
+const followerRouter = Router({ caseSensitive: true, strict: true })
 
 followerRouter.post('/', validation(followSchema), authentication, authorization([roleEnum.user]), addFollow)
 followerRouter.delete('/', validation(followSchema), authentication, authorization([roleEnum.user]), unFollow)

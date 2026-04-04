@@ -6,6 +6,7 @@ export const generalRules = {
         const isValid = Types.ObjectId.isValid(value)
         return isValid ? value : helper.message('inValid id')
     }),
+    
     email: joi.string().email({ tlds: { allow: true }, minDomainSegments: 2, maxDomainSegments: 3 }),
     password: joi.string().regex(/^[a-zA-Z0-9!@#$%^&*_-]{6,30}$/),
     cPassword: joi.string().valid(joi.ref('password')).messages({

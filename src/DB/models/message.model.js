@@ -9,6 +9,10 @@ const messageSchema = new mongoose.Schema(
             maxLength: [999, 'too long'],
             trim: true,
         },
+        attachments: [{
+            secure_url: String,
+            public_id: String,
+        }],
         userId: {
             type: Types.ObjectId,
             required: true,

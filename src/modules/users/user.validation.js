@@ -29,6 +29,12 @@ export const signInSchema = {
     }).required()
 }
 
+export const forgetPasswordSchema = {
+    body: joi.object({
+        email: generalRules.email.required(),
+    }).required()
+}
+
 export const shareProfileSchema = {
     params: joi.object({
         id: generalRules.id.required()
@@ -53,5 +59,19 @@ export const updatePasswordSchema = {
             'any.only': 'Confirm password does not match newPassword',
             'any.required': 'Confirm password is required'
         }).required(),
+    }).required()
+}
+
+export const resetPasswordSchema = {
+    body: signInSchema.body.append({
+        otp: joi.string().regex(/^\d{6}$/).required(),
+        cPassword: generalRules.cPassword.required(),
+    }).required()
+}
+
+export const verifyEmailSchema = {
+    body: joi.object({
+        email: generalRules.email.required(),
+        otp: joi.string().regex(/^\d{6}$/).required(),
     }).required()
 }

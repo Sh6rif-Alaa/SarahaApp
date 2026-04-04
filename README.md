@@ -5,6 +5,8 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 ## 📋 Features
 
 - **User Authentication** - Secure signup and signin with JWT tokens and Gmail authentication
+- **Email Verification** - OTP-based email verification for enhanced security
+- **Password Recovery** - Secure password reset with OTP verification
 - **User Profiles** - Create and manage user profiles with detailed information, profile pictures, and view tracking
 - **Follow System** - Follow and unfollow other users with follower/following counts
 - **Token Management** - JWT access and refresh tokens with logout functionality (single device or all devices)
@@ -86,7 +88,11 @@ The server will start on `http://localhost:3000` (or your specified PORT)
 | POST | `/users/signup/gmail` | Register new user with Gmail OAuth | No |
 | POST | `/users/signin` | Login user | No |
 | POST | `/users/refreshToken` | Refresh access token | Yes |
+| POST | `/users/reSendOtp` | Resend OTP for email verification or password reset | No |
 | POST | `/users/logout` | Logout user (revoke token or all tokens) | Yes |
+| PATCH | `/users/forget-password` | Initiate password recovery (sends OTP) | No |
+| PATCH | `/users/reset-password` | Reset password with OTP verification | No |
+| PATCH | `/users/verifyEmail` | Verify email address with OTP | No |
 | GET | `/users/profile` | Get authenticated user profile with follower counts | Yes |
 | GET | `/users/shareProfile/:id` | Get public user profile (increments view count) | No |
 | PATCH | `/users/updateProfile` | Update user profile information | Yes |
@@ -243,6 +249,19 @@ The API uses **Joi** for comprehensive input validation on all endpoints. Valida
 - **signInSchema** - Validates user login:
   - `email`: Valid email format (required)
   - `password`: Valid password format (required)
+
+- **forgetPasswordSchema** - Initiates password recovery:
+  - `email`: Valid email format (required)
+
+- **resetPasswordSchema** - Resets password with OTP:
+  - `email`: Valid email format (required)
+  - `password`: Valid password format (required)
+  - `otp`: 6-digit OTP (required)
+  - `cPassword`: Must match password (required)
+
+- **verifyEmailSchema** - Verifies email address with OTP:
+  - `email`: Valid email format (required)
+  - `otp`: 6-digit OTP (required)
 
 - **updateProfileSchema** - Validates profile updates:
   - `firstName`: 3-16 characters (optional)

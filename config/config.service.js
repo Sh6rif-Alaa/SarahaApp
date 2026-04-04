@@ -5,6 +5,7 @@ dotenv.config({ path: resolve(`config/.env.${process.env.NODE_ENV}`) })
 export const env = {
     PORT: process.env.PORT,
     DATABASE_URL: process.env.DATABASE_URL,
+    DATABASE_ONLINE_URL: process.env.DATABASE_ONLINE_URL,
     TOKEN_KEY: process.env.TOKEN_KEY,
     ENCRYPT_KEY: process.env.ENCRYPT_KEY,
     ENCRYPT_ALGORITHM: process.env.ENCRYPT_ALGORITHM,
@@ -14,5 +15,8 @@ export const env = {
     REFRESH_TOKEN_KEY: process.env.REFRESH_TOKEN_KEY,
     CLOUD_NAME: process.env.CLOUD_NAME,
     API_KEY: process.env.API_KEY,
-    API_SECRET: process.env.API_SECRET
+    API_SECRET: process.env.API_SECRET,
+    REDIS_URL: process.env.REDIS_URL,
+    EMAIL: process.env.EMAIL,
+    PASSWORD: process.env.PASSWORD
 }

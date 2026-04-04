@@ -6,6 +6,14 @@ export const aggregate = async ({ pipeline = [], model } = {}) => {
     return await model.aggregate(pipeline)
 }
 
+export const find = async ({ filter = {}, model, options = {} } = {}) => {
+    const doc = model.find(filter, options)
+    if (options.populate) doc.populate(options.populate)
+    if (options.skip) doc.skip(options.skip)
+    if (options.limit) doc.limit(options.limit)
+    return await doc.exec()
+}
+
 export const findOne = async ({ filter = {}, model, options = {} } = {}) => {
     const doc = model.findOne(filter, options)
     if (options.populate) doc.populate(options.populate)
