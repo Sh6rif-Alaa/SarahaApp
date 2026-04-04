@@ -7,6 +7,7 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 - **User Authentication** - Secure signup and signin with JWT tokens and Gmail authentication
 - **Email Verification** - OTP-based email verification for enhanced security
 - **Password Recovery** - Secure password reset with OTP verification
+- **Email Notifications** - Automated email delivery for verification codes and OTP
 - **User Profiles** - Create and manage user profiles with detailed information, profile pictures, and view tracking
 - **Follow System** - Follow and unfollow other users with follower/following counts
 - **Token Management** - JWT access and refresh tokens with logout functionality (single device or all devices)
@@ -14,9 +15,12 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 - **Secure Password Storage** - Bcrypt encryption for password security
 - **Data Encryption** - Additional security layer for sensitive data like phone numbers
 - **Input Validation** - Comprehensive Joi-based validation for all API requests
+- **Rate Limiting** - API request rate limiting for protection against abuse
+- **HTTP Security** - Security headers via Helmet middleware
+- **Caching & Sessions** - Redis-based caching for improved performance
 - **File Upload** - Image upload support with Cloudinary integration
 - **Profile Sharing** - Public profile sharing with view count tracking
-- **Anonymous Messaging** - *(Coming Soon)* Send and receive anonymous messages
+- **Anonymous Messaging** - Send and receive anonymous messages with optional file attachments
 
 ## 🛠️ Technologies
 
@@ -30,6 +34,10 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 - **Cloudinary v2.9.0** - Cloud-based image management and storage
 - **UUID v13.0.0** - Unique identifier generation
 - **CORS v2.8.6** - Cross-Origin Resource Sharing middleware
+- **Helmet v8.1.0** - HTTP headers security middleware
+- **express-rate-limit v8.3.2** - Rate limiting middleware for API protection
+- **Nodemailer v8.0.2** - Email sending for notifications and OTP delivery
+- **Redis v5.11.0** - In-memory data store for caching and session management
 - **dotenv v17.3.1** - Environment variable management
 - **cross-env v10.1.0** - Cross-platform environment variable setting
 - **Multer v2.0.2** - Middleware for handling file uploads (images, documents, etc.)
@@ -105,9 +113,13 @@ The server will start on `http://localhost:3000` (or your specified PORT)
 | POST | `/followers` | Follow a user | Yes |
 | DELETE | `/followers` | Unfollow a user | Yes |
 
-### Messages *(Coming Soon)*
+### Messages
 
-The messages module is under development. Endpoints for sending and receiving anonymous messages will be available soon.
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/messages/send` | Send anonymous message with optional attachments | No |
+| GET | `/messages` | Get all messages for authenticated user | Yes |
+| GET | `/messages/:messageId` | Get a specific message | Yes |
 
 ## 🔐 Authentication
 
@@ -181,8 +193,12 @@ Authorization: your_prefix <your_access_token>
 ### Message Model
 ```javascript
 {
-  content: String (1-999 chars),
-  userId: ObjectId (ref: User),
+  content: String (1-999 chars, required),
+  attachments: [{
+    secure_url: String,
+    public_id: String
+  }],
+  userId: ObjectId (ref: User, required),
   createdAt: Date,
   updatedAt: Date
 }
@@ -283,6 +299,16 @@ The API uses **Joi** for comprehensive input validation on all endpoints. Valida
 - **followSchema** - Validates follow/unfollow action:
   - `following_id`: User ID to follow (required)
 
+### Message Validation Schemas
+
+- **sendMessageSchema** - Validates anonymous message sending:
+  - `content`: Message text 1-999 characters (required)
+  - `userId`: Recipient user ID (required)
+  - `attachments`: Optional files (up to 3 images)
+
+- **getMessageSchema** - Validates message retrieval:
+  - `messageId`: Message ID in URL params (required)
+
 ### Custom Validation Response
 
 When validation fails, the API returns a 400 status with detailed error information:
@@ -351,23 +377,6 @@ npm start
 - `.env.production` - Production-specific variables
 
 All environment files are listed in `.gitignore` for security.
-
-### Required Environment Variables
-
-```env
-PORT=your_port
-DATABASE_URL=your_mongodb_connection_string
-TOKEN_KEY=your_jwt_access_token_secret
-REFRESH_TOKEN_KEY=your_jwt_refresh_token_secret
-ENCRYPT_KEY=your_encryption_key
-ENCRYPT_ALGORITHM=aes-256-cbc
-PREFIX=your_prefix
-SALT_ROUNDS=your_bcrypt_salt_rounds
-CLIENT_ID=your_google_oauth_client_id
-CLOUD_NAME=your_cloudinary_cloud_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
-```
 
 ## 👥 Profile Sharing
 
