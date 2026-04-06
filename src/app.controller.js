@@ -12,9 +12,7 @@ import fs from "node:fs"
 import helmet from 'helmet'
 import { rateLimit } from 'express-rate-limit'
 
-const app = express()
-
-const bootstrap = () => {
+const bootstrap = async (app) => {
     const limiter = rateLimit({
         windowMs: 60 * 5 * 1000,
         limit: 10,
