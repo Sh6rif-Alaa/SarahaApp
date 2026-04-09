@@ -56,7 +56,7 @@ A Node.js backend application inspired by Saraha - an anonymous messaging platfo
 
 1. **Clone the repository**
 ```bash
-git clone [https://github.com/yourusername/saraha-app.git](https://github.com/Sh6rif-Alaa/SarahaApp.git)
+git clone [https://github.com/Sh6rif-Alaa/SarahaApp.git](https://github.com/Sh6rif-Alaa/socialApp.git)
 cd saraha-app
 ```
 
